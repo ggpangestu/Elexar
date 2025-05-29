@@ -124,7 +124,7 @@
     });
 
 
-	document.addEventListener('alpine:init', () => {
+	  document.addEventListener('alpine:init', () => {
 		Alpine.data('sidebar', () => {
 			const activeRoute = document.querySelector('[x-data="sidebar"]').dataset.activeRoute;
 

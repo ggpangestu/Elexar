@@ -5,11 +5,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AdminHomeSectionController;
+use App\Http\Controllers\LandingController;
 
-Route::get('/', function () {
-    return view('dashboard');
-});
-
+Route::get('/', [LandingController::class, 'index'])->name('users.landing');
 
 
 Route::prefix('admin')->group(function () {
@@ -20,12 +19,12 @@ Route::prefix('admin')->group(function () {
 
 Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/layout/home', function () {
-        return view('admin.layout.home');
-    })->name('admin.layout.home');
-
+    
+    Route::get('/layout/home', [AdminHomeSectionController::class, 'showForm'])->name('admin.layout.home'); // Form upload
+    Route::post('/layout/home', [AdminHomeSectionController::class, 'upload'])->name('admin.layout.home.upload'); // Upload + timpa
 
     Route::get('/layout/about', function () {
         return view('admin.layout.about');
     })->name('admin.layout.about');
+
 });

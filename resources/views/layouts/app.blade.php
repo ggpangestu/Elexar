@@ -154,7 +154,7 @@
     // === 2. Highlight Active Nav ===
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
-    let currentActiveSection = "home";
+    let currentActiveSection = "";
 
     const navObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {

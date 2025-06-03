@@ -35,4 +35,3 @@ class AdminAuthController
         return redirect()->route('admin.login');
     }
 }
-

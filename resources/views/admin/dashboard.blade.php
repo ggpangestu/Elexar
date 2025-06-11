@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'ADMIN DASHBOARD')
+
 @section('content')
 <h1 class="text-3xl font-bold mb-4">Dashboard Admin</h1>
 
@@ -7,12 +9,12 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
   <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
     <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Jumlah User</h2>
-    <p class="text-3xl font-bold text-blue-500">120</p>
+    <p class="text-3xl font-bold text-blue-500">{{ $userCount }}</p>
   </div>
 
   <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
     <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Jumlah Admin</h2>
-    <p class="text-3xl font-bold text-green-500">5</p>
+    <p class="text-3xl font-bold text-green-500">{{ $adminCount }}</p>
   </div>
 
   <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
@@ -51,86 +53,49 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  const datasets = {
-    users: {
-      daily: {
-        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-        data: [5, 8, 6, 10, 7, 4, 2]
-      },
-      monthly: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        data: [20, 35, 40, 25, 30, 50]
-      },
-      yearly: {
-        labels: ['2020', '2021', '2022', '2023', '2024'],
-        data: [200, 350, 420, 390, 480]
-      }
-    },
-    meetings: {
-      daily: {
-        labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-        data: [1, 2, 0, 3, 1, 1, 0]
-      },
-      monthly: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        data: [5, 10, 8, 15, 12, 20]
-      },
-      yearly: {
-        labels: ['2020', '2021', '2022', '2023', '2024'],
-        data: [50, 70, 60, 90, 100]
-      }
-    }
-  };
-
   const ctx = document.getElementById('singleChart').getContext('2d');
   let chart;
 
-  function renderChart(type, range) {
-    const chartData = datasets[type][range];
+  function fetchAndRenderUserChart(range) {
+    fetch(`/admin/chart-data?range=${range}`)
+      .then(response => response.json())
+      .then(res => {
+        if (chart) chart.destroy();
 
-    const config = {
-      type: 'bar',
-      data: {
-        labels: chartData.labels,
-        datasets: [{
-          label: type === 'users' ? 'Pendaftaran User' : 'Permintaan Meeting',
-          data: chartData.data,
-          backgroundColor: type === 'users' ? '#3B82F6' : '#EF4444',
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top'
+        chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: res.labels,
+            datasets: [{
+              label: 'Pendaftaran User',
+              data: res.data,
+              backgroundColor: '#3B82F6',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'top' }
+            },
+            scales: {
+              y: { beginAtZero: true }
+            }
           }
-        },
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    };
-
-    if (chart) chart.destroy();
-    chart = new Chart(ctx, config);
+        });
+      })
+      .catch(err => console.error('Gagal ambil data chart:', err));
   }
 
   // Inisialisasi awal
-  renderChart('users', 'monthly');
+  fetchAndRenderUserChart('monthly');
 
-  document.getElementById('dataType').addEventListener('change', () => {
-    const type = document.getElementById('dataType').value;
-    const range = document.getElementById('timeRange').value;
-    renderChart(type, range);
-  });
+  // Sembunyikan dropdown Jenis Data
+  document.getElementById('dataType').closest('div').style.display = 'none';
 
   document.getElementById('timeRange').addEventListener('change', () => {
-    const type = document.getElementById('dataType').value;
     const range = document.getElementById('timeRange').value;
-    renderChart(type, range);
+    fetchAndRenderUserChart(range);
   });
 </script>
 @endsection

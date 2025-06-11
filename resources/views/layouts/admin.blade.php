@@ -3,53 +3,106 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ darkMode: true }" x-bind:class="{ 'dark': darkMode }">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard</title>
+  <title>@yield('title', 'MySite')</title>
   @vite('resources/css/app.css')
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <script src="https://unpkg.com/alpinejs" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
   
 	<style>
-	.custom-toast-success {
-		background-color: #38a169 !important;
-		color: white !important;
-	}
 
-	html, body {
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		overflow-y: auto;
-		box-sizing: border-box;
-	}
+		.custom-toast-warning {
+			background-color: #e53e3e !important;
+			color: white !important;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+		.custom-toast-success {
+			background-color: #38a169 !important;
+			color: white !important;
+		}
+
+		.custom-toast-errors {
+			background-color: #e53e3e !important;
+			color: white !important;
+			font-weight: 600;
+			box-shadow: 0 4px 12px rgba(229, 62, 62, 0.5);
+		}
+
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			overflow-y: auto;
+			box-sizing: border-box;
+		}
+
+		[x-cloak] { display: none !important; }
 	</style>
 </head>
 <body x-data="mainSidebar()" x-init="init()" class="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
 
 	@if(session('success'))
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			Swal.fire({
-				icon: 'success',
-				title: 'Berhasil!',
-				text: @json(session('success')),
-				showConfirmButton: false,
-				timer: 2500,
-				timerProgressBar: true,
-				toast: true,
-				position: 'top',
-				customClass: {
-					popup: 'custom-toast-success'
-				}
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				Swal.fire({
+					icon: 'success',
+					title: 'Berhasil!',
+					text: @json(session('success')),
+					showConfirmButton: false,
+					timer: 2500,
+					timerProgressBar: true,
+					toast: true,
+					position: 'top',
+					customClass: {
+						popup: 'custom-toast-success'
+					}
+				});
 			});
-		});
-	</script>
+		</script>
 	@endif
+
+	@if ($errors->any())
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				Swal.fire({
+					icon: 'error',
+					title: 'Terjadi Kesalahan!',
+					html: `{!! implode('<br>', $errors->all()) !!}`,
+					showConfirmButton: true,
+                    timer: null,
+  					toast: false,
+                    position: 'center',
+                    customClass: { popup: 'custom-toast-errors' }
+				});
+			});
+		</script>
+	@endif
+
+	@if(session('nochange'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Tidak Ada Perubahan',
+                    text: '{{ session('nochange') }}',
+                    showConfirmButton: false,
+                    timer: 2500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top',
+                    customClass: { popup: 'custom-toast-warning' }
+                });
+            });
+        </script>
+    @endif
+
+
 	<!-- Sidebar -->
 	<aside
 		:class="open ? 'w-64' : 'w-20'"
@@ -87,13 +140,23 @@
 				</svg>
 				</div>
 				<div class="ml-6 mt-2 space-y-1" x-show="dropdowns.layout" x-transition>
-				<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.home') }}" class="block px-3 py-1	 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800 {{ request()->routeIs('admin.layout.home') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
-					Home
-				</a>
-				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800" :class="open ? 'block' : 'hidden'">About</a>
-				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800" :class="open ? 'block' : 'hidden'">Work</a>
+					<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.home') }}" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800 {{ request()->routeIs('admin.layout.home') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+						Home
+					</a>
+					<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.about') }}" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800 {{ request()->routeIs('admin.layout.about') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+						About
+					</a>
+					<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.work') }}" class="block px-3 py-1  rounded hover:bg-indigo-200 dark:hover:bg-indigo-800 {{ request()->routeIs('admin.layout.work') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+						Work
+					</a>
 				</div>
 			</div>
+
+			<!-- Folder -->
+			<a href="{{ route('admin.folders.index') }}" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 {{ request()->routeIs('admin.folders.index') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+				<i class="ph ph-folders text-xl"></i>
+				<span :class="open ? 'block' : 'hidden'">Folders</span>
+			</a>
 
 			<!-- Users -->
 			<a href="#" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900">
@@ -118,7 +181,7 @@
 		<!-- Logout -->
 		<form action="{{ route('admin.logout') }}" method="POST" class="p-4 border-t dark:border-gray-700" onsubmit="localStorage.removeItem('dropdown_layout')">
 			@csrf
-			<button type="submit" class="menu-item w-full flex items-center justify-center space-x-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+			<button type="submit" class="menu-item w-full flex items-center justify-center space-x-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 relative">
 				<i class="ph ph-sign-out text-xl"></i>
 				<span :class="open ? 'block' : 'hidden'" class="label">Logout</span>
 			</button>

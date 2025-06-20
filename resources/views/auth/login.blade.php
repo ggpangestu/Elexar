@@ -41,7 +41,7 @@
                 </x-primary-button>
 
                 <a href="{{ route('google.login') }}"
-                   class="w-full flex items-center justify-center gap-2 border border-white/30 text-white rounded px-4 py-2 hover:bg-white/20 transition">
+                   class="w-full flex items-center justify-center gap-2 border border-white/30 text-white rounded mt-3 px-4 py-2 hover:bg-white/20 transition">
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
                     Login with Google
                 </a>

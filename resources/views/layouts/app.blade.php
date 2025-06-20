@@ -14,182 +14,182 @@
 
         <!-- Scripts -->
         <style>
-          html {
-            scroll-behavior: smooth;
-          }
-          .active-nav {
-            color: #794f3c;
-          }
-
-          .card-top {
-            transform: translateX(100px) translateY(24px) rotate(12deg);
-            transition: transform 0.4s ease;
-          }
-
-          .card-middle {
-            transform: translateX(0) rotate(-4deg);
-            transition: transform 0.4s ease;
-          }
-
-          .card-bottom {
-            transform: translateX(-100px) rotate(-15deg) translateY(-10px);
-            transition: transform 0.4s ease;
-          }
-
-          /* ===== Hover (desktop only) ===== */
-          @media (min-width: 768px) {
-            .group:hover .card-top {
-              transform: translateX(220px) rotate(5deg) scale(1.02) translateY(12px);
-              transition-delay: 150ms;
+            html {
+                scroll-behavior: smooth;
+            }
+            .active-nav {
+                color: #794f3c;
             }
 
-            .group:hover .card-middle {
-              transform: translateX(0) rotate(0deg) scale(1.02);
-              transition-delay: 100ms;
+            .card-top {
+                transform: translateX(100px) translateY(24px) rotate(12deg);
+                transition: transform 0.4s ease;
             }
 
+            .card-middle {
+                transform: translateX(0) rotate(-4deg);
+                transition: transform 0.4s ease;
+            }
+
+            .card-bottom {
+                transform: translateX(-100px) rotate(-15deg) translateY(-10px);
+                transition: transform 0.4s ease;
+            }
+
+            /* ===== Hover (desktop only) ===== */
+            @media (min-width: 768px) {
+                .group:hover .card-top {
+                transform: translateX(220px) rotate(5deg) scale(1.02) translateY(12px);
+                transition-delay: 150ms;
+                }
+
+                .group:hover .card-middle {
+                transform: translateX(0) rotate(0deg) scale(1.02);
+                transition-delay: 100ms;
+                }
+
+                .group:hover .card-bottom {
+                transform: translateX(-245px) rotate(-5deg) scale(1.02) translateY(10px);
+                transition-delay: 50ms;
+                }
+            }
+
+            /* ===== Transisi smooth ===== */
+            .group:hover .card-top,
+            .group:hover .card-middle,
             .group:hover .card-bottom {
-              transform: translateX(-245px) rotate(-5deg) scale(1.02) translateY(10px);
-              transition-delay: 50ms;
+                transition: transform 0.4s ease;
             }
-          }
 
-          /* ===== Transisi smooth ===== */
-          .group:hover .card-top,
-          .group:hover .card-middle,
-          .group:hover .card-bottom {
-            transition: transform 0.4s ease;
-          }
+            .masonry-gallery {
+                column-gap: 1rem;
+            }
 
-          .masonry-gallery {
-            column-gap: 1rem;
-          }
+            .gallery-img {
+                break-inside: avoid;
+                margin-bottom: 1rem; /* atur jarak bawah */
+            }
 
-          .gallery-img {
-            break-inside: avoid;
-            margin-bottom: 1rem; /* atur jarak bawah */
-          }
+            .masonry-gallery a {
+                display: block;
+                margin-bottom: 1rem;
+                break-inside: avoid;
+            }
 
-          .masonry-gallery a {
-            display: block;
-            margin-bottom: 1rem;
-            break-inside: avoid;
-          }
-
-          .masonry-gallery img {
-            width: 100%;
-            display: block;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            break-inside: avoid;
-          }
-          [x-cloak] { display: none !important; }
+            .masonry-gallery img {
+                width: 100%;
+                display: block;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                break-inside: avoid;
+            }
+            [x-cloak] { display: none !important; }
         </style>
     </head>
     <body class="font-sans text-base bg-black text-white overflow-x-hidden">
 
-      @if(session('status'))
-        <div class="fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded shadow">
-          {{ session('status') }}
-        </div>
-      @endif
+        @if(session('status'))
+            <div class="fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded shadow">
+                {{ session('status') }}
+            </div>
+        @endif
 
 
-      <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 px-4 py-1 bg-black md:bg-transparent flex items-center justify-between transition-colors duration-300">
-        <!-- KIRI: Logo -->
-        <div class="h-16 flex items-center">
-          <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="h-full object-contain" />
-        </div>
+        <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 px-4 py-1 bg-black md:bg-transparent flex items-center justify-between transition-colors duration-300">
+            <!-- KIRI: Logo -->
+            <div class="h-16 flex items-center">
+                <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="h-full object-contain" />
+            </div>
 
-        <!-- TENGAH: Nav menu (hidden di mobile) -->
-        <div class="hidden md:flex flex-1 justify-center">
-          <ul class="flex gap-64 items-center">
-            <li>
-              <button data-target="home" onclick="scrollToSection('home')" class="nav-link group relative px-2 py-1">
-                <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">HOME</span>
-                <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
-              </button>
-            </li>
-            <li>
-              <button data-target="about" onclick="scrollToSection('about')" class="nav-link group relative px-2 py-1">
-                <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">ABOUT</span>
-                <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
-              </button>
-            </li>
-            <li>
-              <button data-target="work" onclick="scrollToSection('work')" class="nav-link group relative px-2 py-1">
-                <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">WORK</span>
-                <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
-              </button>
-            </li>
-          </ul>
-        </div>
+            <!-- TENGAH: Nav menu (hidden di mobile) -->
+            <div class="hidden md:flex flex-1 justify-center">
+                <ul class="flex gap-64 items-center">
+                    <li>
+                        <button data-target="home" onclick="scrollToSection('home')" class="nav-link group relative px-2 py-1">
+                            <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">HOME</span>
+                            <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button data-target="about" onclick="scrollToSection('about')" class="nav-link group relative px-2 py-1">
+                            <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">ABOUT</span>
+                            <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button data-target="work" onclick="scrollToSection('work')" class="nav-link group relative px-2 py-1">
+                            <span class="relative z-10 group-hover:text-amber-800 tracking-[0.2em]">WORK</span>
+                            <span class="absolute inset-0 bg-gray-500 bg-opacity-30 scale-x-0 group-hover:scale-x-100 active:scale-x-100 transition-transform duration-300 origin-left rounded-md z-0"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
-        <!-- KANAN: Burger button di mobile & login di desktop -->
-        <div class="flex items-center gap-4">
-          <!-- Burger button -->
-          <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
-
-          <div class="space-x-4">
-            @guest
-
-              <a href="{{ route('login') }}" class="hidden md:inline-block px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">
-                Login
-              </a>
-            @endguest
-
-            @auth
-              <!-- Dropdown User -->
-              <div x-data="{ open: false }" class="relative inline-block text-left">
-                <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                  <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="w-8 h-8 rounded-full" />
-                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
+            <!-- KANAN: Burger button di mobile & login di desktop -->
+            <div class="flex items-center gap-4">
+                <!-- Burger button -->
+                <button id="menu-toggle" class="md:hidden text-white focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
                 </button>
 
-                <div x-show="open" @click.outside="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-                  <a href="{{ route('profile.show') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.878 6.196a9 9 0 01-13.757 11.608z" />
-                    </svg>
-                    Profile
-                  </a>
-                  <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100">
-                      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
-                      </svg>
-                      Logout
-                    </button>
-                  </form>
-                </div>
-              </div>
-            @endauth
-          </div>
-        </div>
+                <div class="space-x-4">
+                    @guest
+                    <a href="{{ route('login') }}" class="hidden md:inline-block px-4 py-2 border border-white rounded-full hover:bg-white hover:text-black transition">
+                        Login
+                    </a>
+                    @endguest
 
-        <!-- MENU MOBILE -->
-        <div id="nav-menu" class="md:hidden absolute top-full left-0 w-full bg-black hidden px-3 py-2">
-          <ul class="flex flex-col gap-4">
-            <li><button onclick="scrollToSection('home')" class="text-left nav-link active:text-amber-600">HOME</button></li>
-            <li><button onclick="scrollToSection('about')" class="text-left nav-link active:text-amber-600">ABOUT</button></li>
-            <li><button onclick="scrollToSection('work')" class="text-left nav-link active:text-amber-600">WORK</button></li>
-            <li><a href="#" class="block mt-2 border-t pt-2 active:text-amber-600">Login</a></li>
-          </ul>
-        </div>
-      </nav>
+                    @auth
+                    <!-- Dropdown User -->
+                    <div x-data="{ open: false }" class="relative inline-block text-left">
+                        <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="w-8 h-8 rounded-full" />
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <div x-show="open" @click.outside="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
+                            <a href="{{ route('profile.show') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.878 6.196a9 9 0 01-13.757 11.608z" />
+                                </svg>
+                                Profile
+                            </a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- MENU MOBILE -->
+            <div id="nav-menu" class="md:hidden absolute top-full left-0 w-full bg-black hidden px-3 py-2">
+                <ul class="flex flex-col gap-4">
+                    <li><button onclick="scrollToSection('home')" class="text-left nav-link active:text-amber-600">HOME</button></li>
+                    <li><button onclick="scrollToSection('about')" class="text-left nav-link active:text-amber-600">ABOUT</button></li>
+                    <li><button onclick="scrollToSection('work')" class="text-left nav-link active:text-amber-600">WORK</button></li>
+                    <li><a href="#" class="block mt-2 border-t pt-2 active:text-amber-600">Login</a></li>
+                </ul>
+            </div>
+        </nav>
 
       {{-- Main content --}}
       <main>
         @yield('content')
       </main>
+      @stack('scripts')
     </body>
 
     <script>

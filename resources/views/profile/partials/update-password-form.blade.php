@@ -1,48 +1,74 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Update Password') }}
-        </h2>
+@php $hasPassword = !empty(Auth::user()->password); @endphp
 
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
-    </header>
+<form method="POST"
+      action="{{ route('password.update') }}"
+      x-ref="form"
+      x-data="passwordForm()"
+      @submit.prevent="handleSubmit"
+      class="space-y-5">
+    @csrf
+    @method('PUT')
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
-        @csrf
-        @method('put')
-
+    {{-- Password Lama (jika sudah ada) --}}
+    @if ($hasPassword)
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+            <x-input-label for="current_password" value="Password Lama" class="text-white" />
+            <x-text-input
+                id="current_password"
+                name="current_password"
+                type="password"
+                x-model="current"
+                class="mt-1 p-2 block w-full bg-white/10 border border-white/30 text-white rounded-md shadow-sm focus:ring-white focus:border-white"
+                required
+            />
+            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2 text-red-300" />
         </div>
+    @endif
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
-        </div>
+    {{-- Password Baru --}}
+    <div>
+        <x-input-label for="password" value="Password Baru" class="text-white" />
+        <x-text-input
+            id="password"
+            name="password"
+            type="password"
+            minlength="8"
+            x-model="password"
+            @input="validate()"
+            class="mt-1 p-2 block w-full bg-white/10 border border-white/30 text-white rounded-md shadow-sm focus:ring-white focus:border-white"
+            required
+        />
+        <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2 text-red-300" />
+    </div>
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
-        </div>
+    {{-- Konfirmasi Password --}}
+    <div>
+        <x-input-label for="password_confirmation" value="Konfirmasi Password" class="text-white" />
+        <x-text-input
+            id="password_confirmation"
+            name="password_confirmation"
+            type="password"
+            minlength="8"
+            x-model="confirmation"
+            @input="validate()"
+            class="mt-1 p-2 block w-full bg-white/10 border border-white/30 text-white rounded-md shadow-sm focus:ring-white focus:border-white"
+            required
+        />
+        <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2 text-red-300" />
+    </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+    {{-- Pesan jika password dan konfirmasi tidak sama --}}
+    <template x-if="error">
+        <div class="text-red-300 text-sm" x-text="error"></div>
+    </template>
 
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
-            @endif
-        </div>
-    </form>
-</section>
+    {{-- Tombol Simpan --}}
+    <div class="flex justify-start">
+        <button
+            type="submit"
+            class="bg-white/20 hover:bg-white/30 text-white border border-white px-4 py-2 rounded-md"
+        >
+            Simpan
+        </button>
+    </div>
+</form>

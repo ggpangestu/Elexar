@@ -27,8 +27,8 @@ Route::middleware(['web'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware('web')->prefix('admin')->group(function () {
@@ -79,6 +79,17 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     // Rute tambahan jika butuh reorder via AJAX (drag & drop)
     Route::post('/folders/{folder}/photos/reorder', [AdminPhotoController::class, 'reorder'])->name('admin.photos.reorder');
+});
+
+use Illuminate\Support\Facades\Mail;
+
+Route::get('/test-email', function () {
+    Mail::raw('Ini adalah email test.', function ($message) {
+        $message->to('gilang.guna@mhs.itenas.ac.id')
+                ->subject('Email Test dari Laravel');
+    });
+
+    return 'Email berhasil dikirim (jika konfigurasi benar).';
 });
 
 require __DIR__.'/auth.php';

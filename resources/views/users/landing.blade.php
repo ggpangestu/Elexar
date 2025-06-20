@@ -222,5 +222,26 @@
   }
 </script>
 
-
+@push('scripts')
+  @if (session('account_deleted'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        Swal.fire({
+          toast: true,
+          position: 'top',
+          title: '❗ Akun berhasil dihapus',
+          background: 'rgba(220, 38, 38, 0.9)', // merah transparan
+          color: '#fff',
+          showConfirmButton: false,
+          timer: 3000,
+          icon: null, // hilangkan icon default
+          customClass: {
+            popup: 'swal2-toast'
+          }
+        });
+      });
+    </script>
+  @endif
+@endpush
 @endsection

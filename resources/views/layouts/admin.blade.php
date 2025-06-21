@@ -29,7 +29,7 @@
 	}
 	</style>
 </head>
-<body x-data="mainSidebar()" x-init="init()" class="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+<body x-data="mainSidebar()" x-init="init()" class="flex h-screen bg-gray-100 text-gray-800">
 
 	@if(session('success'))
 	<script>
@@ -54,15 +54,15 @@
 	<aside
 		:class="open ? 'w-64' : 'w-20'"
 		class="transition-[width] duration-300 ease-in-out
-			bg-white dark:bg-gray-800
-			border-r border-gray-300 dark:border-gray-700
+			bg-white
+			border-r border-gray-300
 			flex flex-col
 			shrink-0"
 		id="sidebar"
 	>
-		<div class="flex items-center justify-between p-4 ml-2 border-b dark:border-gray-700">
-			<h1 :class="open ? 'block' : 'hidden'" class="text-xl font-bold text-indigo-600 dark:text-indigo-400">Admin</h1>
-			<button @click="toggleSidebar()" class="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400">
+		<div class="flex items-center justify-between p-4 ml-2 border-b">
+			<h1 :class="open ? 'block' : 'hidden'" class="text-xl font-bold text-indigo-600">Admin</h1>
+			<button @click="toggleSidebar()" class="text-gray-500 hover:text-indigo-600">
 				<i class="ph ph-list text-2xl"></i>
 			</button>
 		</div>
@@ -70,13 +70,13 @@
 		<!-- Navigation -->
 		<nav class="flex-1 px-4 py-4 space-y-2 overflow-x-hidden" data-active-route="{{ Route::currentRouteName() }}">
 			<!-- Dashboard -->
-			<a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+			<a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 {{ request()->routeIs('admin.dashboard') ? 'bg-indigo-200 font-semibold' : '' }}">
 				<i class="ph ph-house-simple text-xl"></i>
 				<span :class="open ? 'block' : 'hidden'">Dashboard</span>
 			</a>
 
 			<!-- Layout Dropdown -->
-			<div class="px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900">
+			<div class="px-3 py-2 rounded hover:bg-indigo-100">
 				<div class="flex items-center justify-between cursor-pointer" @click="handleDropdown('layout')">
 				<div class="flex items-center space-x-2">
 					<i class="ph ph-squares-four text-xl"></i>
@@ -87,36 +87,36 @@
 				</svg>
 				</div>
 				<div class="ml-6 mt-2 space-y-1" x-show="dropdowns.layout" x-transition>
-				<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.home') }}" class="block px-3 py-1	 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800 {{ request()->routeIs('admin.layout.home') ? 'bg-indigo-200 dark:bg-indigo-800 font-semibold' : '' }}">
+				<a :class="open ? 'block' : 'hidden'" href="{{ route('admin.layout.home') }}" class="block px-3 py-1	 rounded hover:bg-indigo-200 {{ request()->routeIs('admin.layout.home') ? 'bg-indigo-200 font-semibold' : '' }}">
 					Home
 				</a>
-				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800" :class="open ? 'block' : 'hidden'">About</a>
-				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200 dark:hover:bg-indigo-800" :class="open ? 'block' : 'hidden'">Work</a>
+				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200" :class="open ? 'block' : 'hidden'">About</a>
+				<a href="#" class="block px-3 py-1 rounded hover:bg-indigo-200" :class="open ? 'block' : 'hidden'">Work</a>
 				</div>
 			</div>
 
 			<!-- Users -->
-			<a href="#" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900">
+			<a href="#" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100">
 				<i class="ph ph-users text-xl"></i>
 				<span :class="open ? 'block' : 'hidden'">Users</span>
 			</a>
 
 			<!-- Settings -->
-			<a href="#" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900">
+			<a href="#" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-indigo-100">
 				<i class="ph ph-gear-six text-xl"></i>
 				<span :class="open ? 'block' : 'hidden'">Settings</span>
 			</a>
 		</nav>
 
 		<!-- Mode Toggle -->
-		<button id="themeToggleBtn" class="menu-item flex items-center ml-4 mr-4 mb-2 p-2 rounded text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-indigo-900">
+		<button id="themeToggleBtn" class="menu-item flex items-center ml-4 mr-4 mb-2 p-2 rounded text-gray-600 hover:bg-indigo-100">
 			<i id="sunIcon" class="ph ph-sun text-xl hidden ml-1"></i>
 			<i id="moonIcon" class="ph ph-moon text-xl hidden ml-1"></i>
 			<span id="themeLabel" class="text-sm font-medium" :class="open ? 'block' : 'hidden'">Light</span>
 		</button>
 
 		<!-- Logout -->
-		<form action="{{ route('admin.logout') }}" method="POST" class="p-4 border-t dark:border-gray-700" onsubmit="localStorage.removeItem('dropdown_layout')">
+		<form action="{{ route('admin.logout') }}" method="POST" class="p-4 border-t" onsubmit="localStorage.removeItem('dropdown_layout')">
 			@csrf
 			<button type="submit" class="menu-item w-full flex items-center justify-center space-x-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
 				<i class="ph ph-sign-out text-xl"></i>

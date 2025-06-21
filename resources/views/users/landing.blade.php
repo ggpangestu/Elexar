@@ -17,7 +17,7 @@
 </section>
 
 {{-- Section ABOUT --}}
-<section id="about" class="relative min-h-screen flex flex-col bg-[#fcead9] text-black px-6 md:px-20 gap-10 py-12">
+<section id="about" class="relative min-h-s creen flex flex-col bg-[#fcead9] text-black px-6 md:px-20 gap-10 py-12">
 
   <!-- Kontainer Konten: Gambar + Teks -->
   <div class="flex flex-col md:flex-row items-center justify-center mt-28 gap-10 w-full z-10">
@@ -108,5 +108,95 @@
     </div>
   </div>
 </section>
+
+<!-- Footer -->
+<footer class="text-gray-400 px-8 py-8" style="background-color: #333333;">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+            <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="w-8 h-8">
+            <span class="text-lg font-semibold text-white">ELEXAR</span>
+        </div>
+
+        <!-- Contact Info: IG & Email in one row -->
+        <div class="flex flex-wrap gap-6 text-sm items-center">
+            <!-- Instagram -->
+            <div class="flex items-center gap-2">
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm8.75 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] underline">
+                    @Elexar
+                </a>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center gap-2 ml-48">
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" class="hover:text-[#DFB6B2] transition">
+                    <!-- Email Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 6 8-6V18H4z"/>
+                    </svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" target="_blank" class="hover:text-[#DFB6B2] underline">
+                  elexar.project@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-sm text-center md:text-right w-full md:w-auto">
+            &copy; 2025 ELEXAR. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<!-- Footer -->
+<footer class="text-gray-400 px-8 py-8" style="background-color: #333333;">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+            <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="w-8 h-8">
+            <span class="text-lg font-semibold text-white">ELEXAR</span>
+        </div>
+
+        <!-- Contact Info: IG & Email in one row -->
+        <div class="flex flex-wrap gap-6 text-sm items-center">
+            <!-- Instagram -->
+            <div class="flex items-center gap-2">
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm8.75 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] underline">
+                    @Elexar
+                </a>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center gap-2 ml-48">
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" class="hover:text-[#DFB6B2] transition">
+                    <!-- Email Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 6 8-6V18H4z"/>
+                    </svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" target="_blank" class="hover:text-[#DFB6B2] underline">
+                  elexar.project@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-sm text-center md:text-right w-full md:w-auto">
+            &copy; 2025 ELEXAR. All rights reserved.
+        </div>
+    </div>
+</footer>
 
 @endsection

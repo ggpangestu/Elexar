@@ -33,6 +33,10 @@ class GoogleController extends Controller
                     return redirect()->route('login')->with('status', 'Akun Anda belum diverifikasi. Silakan login manual dan verifikasi email terlebih dahulu.');
                 }
 
+                if (! $existingUser->is_active) {
+                    return redirect()->route('login')->with('status', 'Akun Anda telah dinonaktifkan oleh admin.');
+                }
+
                 // Jika email sudah diverifikasi tapi google_id belum ada, isi google_id
                 if (is_null($existingUser->google_id)) {
                     $existingUser->google_id = $googleUser->getId();
@@ -49,6 +53,7 @@ class GoogleController extends Controller
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
                     'email_verified_at' => now(),
+                    'is_active' => true,
                     'password' => null, // Kosongkan agar bisa diatur nanti
                 ]);
 

@@ -11,6 +11,14 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
         <link rel="stylesheet" href="https://unpkg.com/photoswipe@5/dist/photoswipe.css" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Flatpickr CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
         <!-- Scripts -->
         <style>
@@ -84,21 +92,65 @@
                 break-inside: avoid;
             }
             [x-cloak] { display: none !important; }
+
+            /* Warna tombol "Selesai" */
+            .flatpickr-confirm {
+                color: black;
+                border: 1px solid
+                border-radius: 6px;
+                padding: 6px 14px;
+                font-weight: 500;
+                transition: background-color 0.3s ease;
+            }
+
+            .flatpickr-confirm:hover {
+                background-color: rgba(71, 209, 53, 0.3);
+                color: black;
+            }
         </style>
+
     </head>
     <body class="font-sans text-base bg-black text-white overflow-x-hidden">
 
-        @if(session('status'))
-            <div class="fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded shadow">
-                {{ session('status') }}
-            </div>
+        @if(session('success'))
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'success',
+                title: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 5000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-xl text-sm shadow-lg'
+                }
+            });
+        </script>
+        @endif
+
+        @if($errors->any())
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                icon: 'error',
+                title: 'Terjadi kesalahan input',
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-xl text-sm shadow-lg'
+                }
+            });
+        </script>
         @endif
 
 
         <nav id="main-nav" class="fixed top-0 left-0 w-full z-50 px-4 py-1 bg-black md:bg-transparent flex items-center justify-between transition-colors duration-300">
             <!-- KIRI: Logo -->
             <div class="h-16 flex items-center">
-                <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="h-full object-contain" />
+                <img src="{{ asset('img/logo3.png') }}" alt="Logo" class="h-full object-contain" />
             </div>
 
             <!-- TENGAH: Nav menu (hidden di mobile) -->
@@ -143,31 +195,44 @@
                     @endguest
 
                     @auth
-                    <!-- Dropdown User -->
-                    <div x-data="{ open: false }" class="relative inline-block text-left">
-                        <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
-                            <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="w-8 h-8 rounded-full" />
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    <div class="flex items-center gap-4">
+                        <!-- Tombol Booking -->
+                        <button 
+                            onclick="openBookingModal()" 
+                            class="inline-flex items-center gap-2 px-2 py-2  rounded-full border border-white/70 text-white/90 backdrop-blur-sm bg-white/10 hover:bg-white/20 transition duration-200"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l4-4h10l4 4M4 8v12h16V8M10 14h4" />
                             </svg>
+                            Booking
                         </button>
 
-                        <div x-show="open" @click.outside="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-                            <a href="{{ route('profile.show') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.878 6.196a9 9 0 01-13.757 11.608z" />
+                        <!-- Dropdown User -->
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="flex items-center space-x-2 focus:outline-none">
+                                <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}" class="w-8 h-8 rounded-full" />
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                                 </svg>
-                                Profile
-                            </a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100">
+                            </button>
+
+                            <div x-show="open" @click.outside="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
+                                <a href="{{ route('profile.show') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1118.878 6.196a9 9 0 01-13.757 11.608z" />
                                     </svg>
-                                    Logout
-                                </button>
-                            </form>
+                                    Profile
+                                </a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                        </svg>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     @endauth
@@ -374,5 +439,17 @@
           current = nextIndex;
           showingA = !showingA;
       }
+    </script>
+
+    <script>
+        function openBookingModal() {
+            document.getElementById('bookingModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Mencegah scroll
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Mengembalikan scroll
+        }
     </script>
 </html>

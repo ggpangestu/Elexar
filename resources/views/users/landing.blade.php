@@ -75,7 +75,7 @@
     
     {{-- Logo --}}
     <div class="absolute top-6 right-6 z-30">
-      <img src="{{ asset('img/logo 3.png') }}" alt="Logo" class="h-12 md:h-16 object-contain" />
+      <img src="{{ asset('img/logo3.png') }}" alt="Logo" class="h-12 md:h-16 object-contain" />
     </div>
 
     {{--Video --}}
@@ -159,7 +159,161 @@
   </div>
 </section>
 
+{{-- Modal Booking --}}
+
+<div id="bookingModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="backdrop-blur-md border border-white/30 bg-white/10 text-white p-6 rounded-2xl shadow-2xl w-full max-w-md relative">
+        
+        <!-- Tombol Close -->
+        <button onclick="closeBookingModal()" class="absolute top-2 right-3 text-white/80 hover:text-white text-xl">
+            &times;
+        </button>
+
+        <h2 class="text-xl font-bold mb-6 text-center">Buat Booking Baru</h2>
+
+        <form action="{{ route('booking.store') }}" method="POST" class="space-y-4">
+            @csrf
+
+            <p class="text-xs text-white/60 mt-2 text-center italic">
+                * Admin dapat melakukan reschedule maksimal 1–2 hari dari tanggal yang kamu pilih.
+            </p>
+
+            <!-- Email (hidden) -->
+            @if(auth()->check())
+              <input type="hidden" name="email" value="{{ auth()->user()->email }}">
+            @endif
+
+            <!-- ID User (hidden) -->
+            @if(auth()->check())
+              <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+            @endif
+
+            <!-- Tanggal & Jam -->
+            <div>
+                <label class="block mb-1 font-medium text-white/90">Tanggal & Waktu</label>
+                <input 
+                    type="text" 
+                    id="bookingDateTime"
+                    name="booking_date_time" 
+                    class="
+                      w-full
+                      bg-transparent
+                      border
+                      border-white/40
+                      text-white
+                      placeholder-white/60
+                      p-2 rounded-lg focus:outline-none focus:ring focus:ring-white/30"
+                  required
+                >
+            </div>
+
+            <!-- Kategori -->
+            <div>
+                <label class="block mb-1 font-medium text-white/90">Kategori</label>
+                <select 
+                    name="category" 
+                    required 
+                    class="w-full bg-transparent border border-white/40 text-white p-2 rounded-lg focus:outline-none focus:ring focus:ring-white/30"
+                >
+                    <option value="" disabled selected class="bg-black/60 text-white/60">Pilih kebutuhan</option>
+                    <option class="bg-black/50 text-white" value="wedding">Wedding</option>
+                    <option class="bg-black/50 text-white" value="product_shoot">Product Shoot</option>
+                    <option class="bg-black/50 text-white" value="prewedding">Prewedding</option>
+                    <option class="bg-black/50 text-white" value="promotion">Promosi Produk</option>
+                    <option class="bg-black/50 text-white" value="lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <!-- Catatan -->
+            <div>
+                <label class="block mb-1 font-medium text-white/90">Catatan Tambahan</label>
+                <textarea 
+                    name="notes" 
+                    rows="3" 
+                    class="w-full bg-transparent border border-white/40 text-white placeholder-white/60 p-2 rounded-lg focus:outline-none focus:ring focus:ring-white/30" 
+                    placeholder="Contoh: outdoor, minta lighting, dll."
+                ></textarea>
+            </div>
+
+            <button 
+                type="submit" 
+                class="w-full px-4 py-2 rounded-full border border-white/60 text-white backdrop-blur-sm bg-white/10 hover:bg-white/20 transition duration-200"
+            >
+                Kirim Booking
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-gray-400 px-8 py-8" style="background-color: #333333;">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+
+        <!-- Logo -->
+        <div class="flex items-center gap-3">
+            <img src="{{ asset('img/logo3.png') }}" alt="Logo" class="w-8 h-8">
+            <span class="text-lg font-semibold text-white">ELEXAR</span>
+        </div>
+
+        <!-- Contact Info: IG & Email in one row -->
+        <div class="flex flex-wrap gap-6 text-sm items-center">
+            <!-- Instagram -->
+            <div class="flex items-center gap-2">
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5zm8.75 2.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+                    </svg>
+                </a>
+                <a href="https://www.instagram.com/_elexar_/" target="_blank" class="hover:text-[#DFB6B2] underline">
+                    @Elexar
+                </a>
+            </div>
+
+            <!-- Email -->
+            <div class="flex items-center gap-2 ml-48">
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" class="hover:text-[#DFB6B2] transition">
+                    <!-- Email Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-5 h-5" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8.99l8 6 8-6V18H4z"/>
+                    </svg>
+                </a>
+                <a href="https://mail.google.com/mail/?view=cm&to=elexar.project@gmail.com" target="_blank" class="hover:text-[#DFB6B2] underline">
+                  elexar.project@gmail.com
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="text-sm text-center md:text-right w-full md:w-auto">
+            &copy; 2025 ELEXAR. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/confirmDate/confirmDate.css" />
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    flatpickr("#bookingDateTime", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: new Date().fp_incr(1), // Mulai besok
+        time_24hr: true,
+        plugins: [new confirmDatePlugin({
+            confirmText: "Selesai",
+            showAlways: true,
+            theme: "light"
+        })]
+    });
+});
+</script>
+
 <script src="https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js" type="module"></script>
+
 <script type="module">
   import PhotoSwipeLightbox from 'https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js';
 

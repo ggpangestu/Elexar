@@ -13,12 +13,11 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AdminFolderController;
 use App\Http\Controllers\AdminPhotoController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingResponseController;
 
 Route::get('/', [LandingController::class, 'index'])->name('users.landing');
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/gallery/{id}', [GalleryController::class, 'show']);
-});
 
 Route::middleware(['web'])->group(function () {
     Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
@@ -29,6 +28,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/gallery/{id}', [GalleryController::class, 'show']);
+    //Booking
+    Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 });
 
 Route::middleware('web')->prefix('admin')->group(function () {
@@ -39,9 +42,8 @@ Route::middleware('web')->prefix('admin')->group(function () {
 
 Route::middleware('admin')->prefix('admin')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/chart-data/users', [AdminDashboardController::class, 'getUserChartData'])->name('admin.chart.users');
     Route::get('/chart-data', [AdminDashboardController::class, 'chartData'])->name('admin.chart-data');
-
+    Route::get('/chart-booking', [AdminDashboardController::class, 'chartBooking']);
 
 
     //home
@@ -79,17 +81,28 @@ Route::middleware('admin')->prefix('admin')->group(function () {
 
     // Rute tambahan jika butuh reorder via AJAX (drag & drop)
     Route::post('/folders/{folder}/photos/reorder', [AdminPhotoController::class, 'reorder'])->name('admin.photos.reorder');
+
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::patch('/users/{user}/toggle-status', [AdminUserController::class, 'toggleStatus'])->name('admin.users.toggle');
+    Route::patch('/users/{user}/change-role', [AdminUserController::class, 'changeRole'])->name('admin.users.role');
+
+
+    //Route Booking 
+    Route::get('/bookings', [BookingController::class, 'index'])->name('admin.bookings.index');
+    Route::put('/bookings/{booking}/accept', [BookingController::class, 'accept'])->name('admin.bookings.accept');
+
+    Route::get('/bookings/{id}', [BookingController::class, 'showDetail'])->name('admin.bookings.show');
+    Route::put('/bookings/{booking}/reject', [BookingController::class, 'reject'])->name('admin.bookings.reject');
+
+    // Simpan reschedule
+    Route::put('/bookings/{booking}/reschedule', [BookingController::class, 'reschedule'])->name('admin.bookings.reschedule');
+
+    Route::post('bookings/export-pdf', [BookingController::class, 'exportPdf'])->name('admin.bookings.export.pdf');
+
 });
 
-use Illuminate\Support\Facades\Mail;
 
-Route::get('/test-email', function () {
-    Mail::raw('Ini adalah email test.', function ($message) {
-        $message->to('gilang.guna@mhs.itenas.ac.id')
-                ->subject('Email Test dari Laravel');
-    });
-
-    return 'Email berhasil dikirim (jika konfigurasi benar).';
-});
+Route::get('/reschedule/{token}', [BookingResponseController::class, 'show'])->name('reschedule.show');
+Route::post('/reschedule/{token}/respond', [BookingResponseController::class, 'respond'])->name('reschedule.respond');
 
 require __DIR__.'/auth.php';

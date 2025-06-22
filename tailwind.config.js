@@ -13,9 +13,10 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                opensans: ['"Open Sans"', 'sans-serif'],
+                sans: ['Montserrat', 'ui-sans-serif', 'system-ui'],
             },
         },
-    },
+    },  
     plugins: [],
 };

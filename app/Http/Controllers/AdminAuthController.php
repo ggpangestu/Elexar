@@ -14,24 +14,24 @@ class AdminAuthController
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6',
+        ]);
+
         $credentials = $request->only('email', 'password');
+        $credentials['role'] = 'admin';
 
-        if (Auth::attempt($credentials)) {
-            if (Auth::user()->role === 'admin') {
-                session()->flash('success', 'Login berhasil! Selamat datang, Admin.');
-                return redirect()->route('admin.dashboard');
-            }
-            Auth::logout();
-            return back()->withErrors(['email' => 'Unauthorized: Not an admin']);
+        if (Auth::guard('admin')->attempt($credentials)) {
+            session()->flash('success', 'Login berhasil! Selamat datang, Admin.');
+            return redirect()->route('admin.dashboard');
         }
-
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return redirect()->route('admin.login');
     }
 }
-
